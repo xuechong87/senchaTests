@@ -40,22 +40,42 @@ Ext.application({
     },
 
     launch: function() {
-        // Destroy the #appLoadingIndicator element
-        Ext.fly('appLoadingIndicator').destroy();
+        Ext.create("Ext.tab.Panel", {
+            fullscreen: true,
+            tabBarPosition: 'bottom',
 
-        // Initialize the main view
-        Ext.Viewport.add(Ext.create('senchaDemo.view.Main'));
-    },
+            items: [
+                {
+                    xtype: 'nestedlist',
+                    title: 'Blog',
+                    iconCls: 'star',
+                    displayField: 'title',
 
-    onUpdated: function() {
-        Ext.Msg.confirm(
-            "Application Update",
-            "This application has just successfully been updated to the latest version. Reload now?",
-            function(buttonId) {
-                if (buttonId === 'yes') {
-                    window.location.reload();
+                    store: {
+                        type: 'tree',
+
+                        fields: [
+                            'title', 'link', 'author', 'contentSnippet', 'content',
+                            {name: 'leaf', defaultValue: true}
+                        ],
+
+                        root: {
+                            leaf: false
+                        },
+
+                        proxy: {
+                            type: 'jsonp',
+                            url: 'https://ajax.googleapis.com/ajax/services/feed/load?v=2.0&q=http://www.zhihu.com/rss',
+                            reader: {
+                                type: 'json',
+                                rootProperty: 'responseData.feed.entries'
+                            }
+                        }
+                    }
                 }
-            }
-        );
+            ]
+        });
     }
+
+
 });
