@@ -1,0 +1,6 @@
+Ext.data.JsonP.callback1(
+	{"testdata":[
+		{"id":"1","text":"text111"},
+		{"id":"2","text":"text222"}]
+	}
+);

@@ -40,40 +40,53 @@ Ext.application({
     },
 
     launch: function() {
+
+        Ext.define('senchaDemo.model.TestModule', {
+            extend: 'Ext.data.Model',
+            config: {
+                fields: [
+                    {name: 'id', type: 'int'},
+                    {name: 'text',   type: 'string'}
+                ]
+            }
+        });
+
+        // var store1 = Ext.create('Ext.data.Store', {
+        //     autoLoad: true,
+        //     model: 'senchaDemo.model.TestModule',
+        //     proxy: {
+        //         type: 'jsonp',
+        //         url : 'http://127.0.0.1:8888/json/test.json',
+        //         rootProperty:'testdata'
+        //     }
+        // });
+
+
         Ext.create("Ext.tab.Panel", {
             fullscreen: true,
             tabBarPosition: 'bottom',
-
             items: [
-                {
+                {   
                     xtype: 'nestedlist',
                     title: 'Blog',
                     iconCls: 'star',
-                    displayField: 'title',
-
+                    displayField: 'text',
                     store: {
-                        type: 'tree',
-
-                        fields: [
-                            'title', 'link', 'author', 'contentSnippet', 'content',
-                            {name: 'leaf', defaultValue: true}
-                        ],
-
-                        root: {
-                            leaf: false
-                        },
-
+                        model: 'senchaDemo.model.TestModule',
                         proxy: {
                             type: 'jsonp',
-                            url: 'https://ajax.googleapis.com/ajax/services/feed/load?v=2.0&q=http://www.zhihu.com/rss',
+                            url : 'http://127.0.0.1:8888/json/test.json',
                             reader: {
                                 type: 'json',
-                                rootProperty: 'responseData.feed.entries'
+                                rootProperty: 'testdata'
                             }
                         }
                     }
                 }
+
             ]
+
+            
         });
     }
 
